@@ -12,7 +12,7 @@ Advantages of the script:
 Simply download pictures you want to display on your device (they must be in *.bmp* or *.png* extension), run the script (python PovPoiSketchMaker.py), provide the number of LEDs and number of slices, finally add paths to pictures as arguments.
 Example of use:
 
-*python PovPoiSketchMaker.py 150 72 mario.png biohazard.png*
+*python PovPoiSketchMaker.py 150 70 mario.png biohazard.png*
 
 X - 150 - how wide the picture has to be
 
