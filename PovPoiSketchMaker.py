@@ -2,9 +2,9 @@ import cv2
 import sys
 import datetime
 
-def rgb2hex(r,g,b):
-    if (r==0):
-        if (g==0):
+def rgb2hex(r, g, b):
+    if (r == 0):
+        if (g == 0):
             hex = "0x{:02x}".format(b)
         else:
             hex = "0x{:02x}{:02x}".format(g, b)
@@ -16,8 +16,8 @@ numberOfSlices = int(sys.argv[1])
 ledNums = int(sys.argv[2])
 pictures = sys.argv[3:]
 print(pictures)
-file = open('sketch.ino','w')
-file.write("//File created by PPPC - Python POV POI Creator 0.1a\n"
+file = open('sketch.ino', 'w')
+file.write("//File created by PPPC - Python POV POI Creator 0.1b\n"
            "//Author: Filip Hein\n"
            "//Date of creation: {}\n\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
 file.write("//---------------------\n"
@@ -29,13 +29,13 @@ file.write("//---------------------\n"
            "#define NUM_LEDS {} //number of LEDs in a strip\n\n".format(ledNums))
 file.write("uint8_t buttonPin = 12;\n"
            "uint8_t buttonState = 0;\n"
-           "uint8_t licznik = 0;\n"
+           "uint8_t buttonCounter = 0;\n"
            "uint8_t max_bright = 25; // Overall brightness. Changeable.\n"
            "struct CRGB leds[NUM_LEDS];\n"
            "int numberOfSlices = {};\n\n".format(numberOfSlices))
 file.write("void setup(){\n delay(200);\n"
-           " pinMode(buttonPin,INPUT);\n"
-           " attachInterrupt(digitalPinToInterrupt(buttonPin),buttonPushed,RISING); //interrupt\n"
+           " pinMode(buttonPin, INPUT);\n"
+           " attachInterrupt(digitalPinToInterrupt(buttonPin), buttonPushed, RISING); //interrupt\n"
            " FastLED.addLeds<LED_TYPE, DATA_PIN, CLOCK_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalPixelString);\n"
            " Serial.begin(9600); // For testing purposes\n"
            "}\n\n")
@@ -44,13 +44,13 @@ file.write("void setup(){\n delay(200);\n"
 imageSize = (numberOfSlices, ledNums)
 for i in range(len(pictures)):
     img = cv2.imread(pictures[i])
-    resized = cv2.resize(img,imageSize, interpolation = cv2.INTER_AREA)
+    resized = cv2.resize(img, imageSize, interpolation = cv2.INTER_AREA)
     x, y = resized.shape[:2]
     tablica = []
 
     for j in range(x):
         for k in range(y):
-            tablica.append(rgb2hex(resized[j,k,0],resized[j,k,1],resized[j,k,2]))
+            tablica.append(rgb2hex(resized[j, k, 0],resized[j, k, 1],resized[j, k, 2]))
 
     file.write("const unsigned int {}[] = ".format(pictures[i].split(".")[0])+"{")
     for i in range(len(tablica)):
@@ -58,17 +58,19 @@ for i in range(len(pictures)):
     file.write('};\n')
 
 file.write("\nvoid loop(){\n"
-           " for (int x=0;x<numberOfSlices;x++){\n"
-           "  for(int counter=0;counter<NUM_LEDS;counter++){\n"
-           "    leds[counter]=ergebe[counter+NUM_LEDS*x];\n"
+           " for (int x = 0; x < numberOfSlices; x++){\n"
+           "  for(int counter = 0; counter < NUM_LEDS; counter++){\n"
+           "    leds[counter] = YOUR_ARRAY[counter+NUM_LEDS*x]; // You might want to"
+           " change YOUR_ARRAY to an array name you want to display\n "
            "  }\n }\n}\n")
 
-file.write("\nvoid buttonPushed(){ //interrupt handler\n"
+file.write("\nvoid buttonPushed(){ //interrupt handler. Only if you have a "
+           "button changing pictures\n"
            " static unsigned long lastTime;\n"
            " unsigned long timeNow = millis();\n"
            " if (timeNow - lastTime < 50)\n"
            "  return;\n"
-           " licznik++;\n"
+           " buttonCounter++;\n"
            " lastTime = timeNow;\n}\n")
 file.close()
 
