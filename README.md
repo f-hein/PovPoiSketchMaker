@@ -1,4 +1,4 @@
-# Python POV Poi Creator
+# Python POV Poi Sketch Maaker
 Python script creating an Arduino sketch for POV poi. Example of POV poi may be found here: https://www.youtube.com/watch?v=5-xLDVILtMY
 General purpose of this script was to automate writing Arduino code and not copy-pasting every picture's array.
 
@@ -8,8 +8,8 @@ Advantages of the script:
 * Automates the process of writing POV poi software
 * Compatible with Python2.x and Python3.x
 
-### How to use PPPC
-Simply download pictures you want to display on your device (they must be in *.bmp* extension), run the script (python PovPoiSketchMaker.py), provide the number of LEDs and number of slices, finally add paths to pictures as arguments.
+### How to use PPSM
+Simply download pictures you want to display on your device (they must be in *.bmp* or *.png* extension), run the script (python PovPoiSketchMaker.py), provide the number of LEDs and number of slices, finally add paths to pictures as arguments.
 Example of use:
 
 *python PovPoiSketchMaker.py 150 72 mario.png biohazard.png*
